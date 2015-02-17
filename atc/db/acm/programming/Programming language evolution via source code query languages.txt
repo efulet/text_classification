@@ -1,0 +1,5 @@
+Programming languages evolve just like programs. Language features are added and removed, for example when programs using them are shown to be error-prone. When language features are modified, deprecated, removed or even deemed unsuitable for the project at hand, it is necessary to analyse programs to identify occurrences to refactor.
+
+Source code query languages in principle provide a good way to perform this analysis by exploring codebases. Such languages are often used to identify code to refactor, bugs to fix or simply to understand a system better.
+
+This paper evaluates seven Java source code query languages: Java Tools Language, Browse-By-Query, SOUL, JQuery, .QL, Jackpot and PMD as to their power at expressing queries required by several use cases (such as code idioms to be refactored).
