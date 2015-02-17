@@ -21,33 +21,46 @@ Requirements
 + Python 2.7 (Other versions haven't been tested yet)
 
 + Setuptools (http://pypi.python.org/pypi/setuptools)
+
     $> wget https://bootstrap.pypa.io/ez_setup.py -O - | sudo python
 
 + Pip (https://pip.pypa.io/en/latest/installing.html)
+
     $> sudo easy_install pip
 
 + Numpy (http://www.scipy.org/scipylib/download.html)
+
     $> sudo pip install -U numpy
 
 + Scikit-learn (http://scikit-learn.org/stable/install.html)
+
     NOTE: Scikit-learn requires
       - Python >= 2.6 or >= 3.3
       - NumPy >= 1.6.1
       - SciPy >= 0.9
+      
     $> sudo pip install -U scikit-learn
 
 + NLTK (http://www.nltk.org/install.html)
+
     $> sudo pip install -U nltk
 
-+ Open a Python SHELL and type
++ Open a Python SHELL and type:
+    
     $> python
-    >>> import nltk
-    >>> nltk.download()
+    
+    import nltk
+    
+    nltk.download()
 
 + PyBrain (http://pybrain.org/)
+    
     $> cd /usr/local/src
+    
     $> git clone git://github.com/pybrain/pybrain.git
+    
     $> cd pybrain
+    
     $> python setup.py install
 
 
@@ -55,6 +68,7 @@ Run
 ---
 
 Print program options:
+    
     $> python atc/main.py -h
     usage: python main.py
     
@@ -69,4 +83,5 @@ Print program options:
       -w W        weightdecay
 
 Example:
+    
     $> python atc/main.py -e 500 -v -s mynet.net
