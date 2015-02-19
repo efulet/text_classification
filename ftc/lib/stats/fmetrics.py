@@ -1,6 +1,6 @@
 """
-@created_at 2014-12-07
-@author Exequiel Fuentes <efulet@gmail.com>
+@created_at 2015-01-18
+@author Exequiel Fuentes Lettura <efulet@gmail.com>
 """
 
 
@@ -8,11 +8,20 @@ from sklearn import metrics
 
 import matplotlib.pyplot as plt
 
+from lib.util import SystemUtils
+
+
 class FMetrics:
+    """"""
+    
     def __init__(self, logger=None):
-        self._logger = logger or logging.getLogger(__name__)
+        """"""
+        self._logger = logger or SystemUtils().configure_log()
     
     def report(self, y_test, y_pred):
+        """
+        Create a report with several metrics
+        """        
         # **********************************************************************
         # The mean_absolute_error function computes the mean absolute error, 
         # which is a risk function corresponding to the expected value of the 

@@ -1,10 +1,8 @@
 """
-@created_at 2014-11-22
-@author Exequiel Fuentes <efulet@gmail.com>
+@created_at 2015-01-18
+@author Exequiel Fuentes Lettura <efulet@gmail.com>
 """
 
-
-import logging
 
 from pybrain.datasets import ClassificationDataSet
 from pybrain.tools.shortcuts import buildNetwork
@@ -22,10 +20,14 @@ import numpy as np
 import pickle
 import os
 
-from fnetwork_exception import FNetworkException
+from lib.util import SystemUtils
+
+from network_exception import NetworkException
 
 
-class FNetwork:
+class Network:
+    """"""
+    
     # Define the split proportion into 75% training and 25% test data sets
     SPLIT_PROPORTION = 0.25
     
@@ -50,11 +52,11 @@ class FNetwork:
         :param logger: logger object [opcional]
         """
         if input == None or len(input) == 0:
-            raise FNetworkException("Empty dataset")
+            raise NetworkException("Empty dataset")
         self._input = input
         
         if classes == None or len(classes) == 0:
-            raise FNetworkException("Empty class vector")
+            raise NetworkException("Empty class vector")
         self._classes = classes
         
         self._options = options
@@ -62,29 +64,29 @@ class FNetwork:
         if self._options.hidden_neurons:
             self._hidden_neurons = self._options.hidden_neurons
         else:
-            self._hidden_neurons = FNetwork.HIDDEN_NEURONS
+            self._hidden_neurons = self.HIDDEN_NEURONS
         
         if self._options.momentum:
             self._momentum = self._options.momentum
         else:
-            self._momentum = FNetwork.MOMENTUM
+            self._momentum = self.MOMENTUM
         
         if self._options.weightdecay:
             self._weightdecay = self._options.weightdecay
         else:
-            self._weightdecay = FNetwork.WEIGHTDECAY
+            self._weightdecay = self.WEIGHTDECAY
         
         if self._options.epochs:
             self._epochs = self._options.epochs
         else:
-            self._epochs = FNetwork.EPOCHS
+            self._epochs = self.EPOCHS
         
         if self._options.verbose:
             self._verbose = True
         else:
             self._verbose = False
         
-        self._logger = logger or logging.getLogger(__name__)
+        self._logger = logger or SystemUtils().configure_log()
         
         self._dataset = None
         self._X_train = None
@@ -115,7 +117,7 @@ class FNetwork:
         
         # Randomly split the dataset into 75% training and 25% test data sets. 
         # Of course, we could also have created two different datasets to begin with.
-        self._X_test, self._X_train = self._dataset.splitWithProportion(FNetwork.SPLIT_PROPORTION)
+        self._X_test, self._X_train = self._dataset.splitWithProportion(self.SPLIT_PROPORTION)
         
         # For neural network classification, it is highly advisable to encode 
         # classes with one output neuron per class. Note that this operation 
@@ -292,7 +294,7 @@ class FNetwork:
             file_net = open(file_path, 'w')
             pickle.dump(self._feed_forward_network, file_net)
         except Exception, err:
-            raise FNetworkException(str(err))
+            raise NetworkException(str(err))
         finally:
             if file_net != None:
                 file_net.close()
@@ -305,12 +307,12 @@ class FNetwork:
             file_net = None
             
             if os.path.isfile(file_path) == False:
-                raise FNetworkException("No such file: " + file_path)
+                raise NetworkException("No such file: " + file_path)
             
             file_net = open(file_path,'r')
             self._feed_forward_network = pickle.load(file_net)
         except Exception, err:
-            raise FNetworkException(str(err))
+            raise NetworkException(str(err))
         finally:
             if file_net != None:
                 file_net.close()

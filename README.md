@@ -1,8 +1,9 @@
-Welcome to Artificial Neural Network Text Classification
-========================================================
+Welcome to Text Classification Proof of Concepts
+================================================
 
-This program is a proof of concept for text classification using a Artificial 
-Neural Network. This network classifies papers using their abstracts. The 
+This prototype is a proof of concept for text classification using different 
+Machine Learning methods. For starting, several abstracts from scientific papers 
+have been downloaded from ACM Digital Library and IEEE Digital Library. The 
 topics/classes are the following:
 
   * Bioinformatics
@@ -10,9 +11,11 @@ topics/classes are the following:
   * Network
   * Programming language (just Programming for this aplication)
 
-The network are using 80 abstracts in total (20 by topic) for training and 
-validation. These abstracts were downloaded from ACM Digital Library. 20 
-abstracts (5 by topic) from IEEE Digital Library are used for testing the model.
+The prototype is using 80 abstracts in total (20 by topic) from ACM Digital 
+Library for trainig and 20  abstracts (5 by topic) from IEEE Digital Library for
+testing.
+
+Currently, this prototype is implementing just Artificial Neural Networks concept.
 
 
 Requirements
@@ -69,7 +72,7 @@ Run
 
 Print program options:
     
-    $> python atc/main.py -h
+    $> python ftc/main.py -h
     usage: python main.py
     
     optional arguments:
@@ -84,4 +87,4 @@ Print program options:
 
 Example:
     
-    $> python atc/main.py -e 500 -v -s mynet.net
+    $> python ftc/main.py -e 500 -v -s mynet.net

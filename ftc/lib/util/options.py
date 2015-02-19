@@ -1,6 +1,6 @@
 """
-@created_at 2014-11-23
-@author Exequiel Fuentes <efulet@gmail.com>
+@created_at 2015-01-18
+@author Exequiel Fuentes Lettura <efulet@gmail.com>
 """
 
 
@@ -8,11 +8,15 @@ from argparse import ArgumentParser
 
 
 class Options:
+    """"""
+    
     def __init__(self):
+        """"""
         self.parser = ArgumentParser(usage='python main.py')
         self._init_parser()
     
     def _init_parser(self):
+        """"""
         self.parser.add_argument("-e", metavar="E", type=int,
                                  dest="epochs",
                                  default=100,
@@ -44,6 +48,7 @@ class Options:
                                  dest="weightdecay",
                                  default=0.01,
                                  help="weightdecay")
-        
+    
     def parse(self, args=None):
+        """"""
         return self.parser.parse_args(args)

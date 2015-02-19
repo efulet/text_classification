@@ -1,15 +1,17 @@
 """
-@created_at 2014-11-22
-@author Exequiel Fuentes <efulet@gmail.com>
+@created_at 2015-01-18
+@author Exequiel Fuentes Lettura <efulet@gmail.com>
 """
 
 
 import os
-import traceback
+import fnmatch
+
 import re
-import logging
 
 import nltk
+
+from lib.util import FileUtils
 
 
 class BagOfWords:
@@ -17,7 +19,8 @@ class BagOfWords:
     Implements a bag of words. Requires NLTK.
     """
     
-    def __init__(self, logger=None):
+    def __init__(self):
+        """"""
         self._bag_of_words = {}
         
         self._tokenizer = nltk.RegexpTokenizer(r'\w+')
@@ -27,8 +30,6 @@ class BagOfWords:
         #self._stemmer = nltk.LancasterStemmer()
         
         self._minlength = 1
-        
-        self._logger = logger or logging.getLogger(__name__)
     
     def _add_word(self, word):
         """
@@ -42,28 +43,7 @@ class BagOfWords:
         else:
             self._bag_of_words[word] = 1
     
-    def len(self):
-        """
-        Return bag of words length
-        """
-        return len(self._bag_of_words)
-    
-    def words(self):
-        """
-        Return words in the dictonary
-        """
-        return self._bag_of_words.keys()
-    
-    def get_frequency(self, word):
-        """
-        Return word frequency
-        """
-        if word in self._bag_of_words:
-            return self._bag_of_words[word]
-        else:
-            return 0
-    
-    def create_bag_of_words(self, file_path):
+    def _create_bag_of_words(self, file_path):
         """
         Create a bag of word from a text file.
         """
@@ -104,6 +84,64 @@ class BagOfWords:
         # Finally, create the bag of words
         for word in tokens:
             self._add_word(word)
+    
+    def create_vocabulary(self, library="acm"):
+        """
+        Create the bag of words including all abstracts from ACM
+        """
+        for root, dirnames, filenames in os.walk(os.path.join(FileUtils().db_path(), library)):
+            for filename in fnmatch.filter(filenames, '*.txt'):
+                self._create_bag_of_words(os.path.join(root, filename))
+        
+        return self.words()
+    
+    def create_ann_inputs(self, vocabulary, classes, library):
+        """
+        Create inputs for neural network
+        """
+        inputs = []
+        
+        for topic in classes:
+            for root, dirnames, filenames in os.walk(os.path.join(FileUtils().db_path(), library, topic)):
+                for filename in fnmatch.filter(filenames, '*.txt'):
+                    current_inputs = []
+                    current_bag_of_words = BagOfWords()
+                    current_bag_of_words._create_bag_of_words(os.path.join(root, filename))
+                    current_vocabulary = current_bag_of_words.words()
+                    
+                    # 1 when the word is in the bag, 0 otherwise
+                    for word in vocabulary:
+                        if word in current_vocabulary:
+                            current_inputs.append(1)
+                        else:
+                            current_inputs.append(0)
+                    
+                    # Create the input representation:
+                    # --> ([0,1...], topic_index)
+                    inputs.append((current_inputs, classes.index(topic)))
+        
+        return inputs
+    
+    def len(self):
+        """
+        Return bag of words length
+        """
+        return len(self._bag_of_words)
+    
+    def words(self):
+        """
+        Return words in the dictonary
+        """
+        return self._bag_of_words.keys()
+    
+    def get_frequency(self, word):
+        """
+        Return word frequency
+        """
+        if word in self._bag_of_words:
+            return self._bag_of_words[word]
+        else:
+            return 0
     
     def export_bag_of_words(self):
         """
